@@ -31,7 +31,7 @@ validateUserCredentials = (user) => {
     if (response.status === 1) {
         if (response.profile.id === user.id) {
             return {status: 1, profile: user.profile}
-        }
+        } else return {status: -1};
     } else {
         return {status: -1}
     }

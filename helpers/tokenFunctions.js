@@ -17,7 +17,7 @@ let decrypt = (cipher) => {
     return dec;
 }
 
-let createTokenString = (user) => {
+let generateToken = (user) => {
     //new Date()*1+user.email
     return encrypt(new Date()*1+user.email);
 }
@@ -43,7 +43,7 @@ let getEmailFromCipher = (token) => {
 
 
 module.exports = {
-    createTokenString,
+    generateToken,
     addTokenToTokenPool,
     removeTokenFromTokenPool,
     isTokenInPool,

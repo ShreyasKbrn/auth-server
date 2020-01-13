@@ -8,6 +8,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+global.tokenPool = ['dddd'];
+
 app.use('/users', require('./routes/users/routes'));
 
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 3200;
