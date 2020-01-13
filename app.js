@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-global.tokenPool = ['dddd'];
+global.tokenPool = [];
 
 app.use('/users', require('./routes/users/routes'));
 

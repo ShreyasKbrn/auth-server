@@ -9,7 +9,9 @@ const tokenFunctions = require('../../helpers/tokenFunctions');
 let authenticate = (req, res, next) => {
     let response = userService.validateUserCredentials(req.body);
     if (response.status === 1) {
-        res.json({status: 1, token: tokenFunctions.generateToken(req.body)});
+        let token = tokenFunctions.generateToken(req.body);
+        tokenPool = tokenFunctions.addTokenToTokenPool(token, tokenPool);
+        res.json({status: 1, token: token});
     } else {
         res.json({status: -1});
     }
@@ -33,8 +35,19 @@ let addUser = (req, res, next) => {
     }
 }
 
+let logout = (req, res) => {
+    tokenPool = tokenFunctions.removeTokenFromTokenPool(req.body.token, tokenPool);
+    res.json({status: 1, message: 'Token Deleted'});
+}
+
+let onlineUsers = (req, res, next) => {
+    res.json({users: [...tokenPool]});
+}
+
 router.post('/authenticate', authenticate);
 router.get('/getAll', getAll);
 router.post('/addUser', addUser);
+router.get('/online', onlineUsers);
+router.delete('/logout', logout);
 
 module.exports = router;

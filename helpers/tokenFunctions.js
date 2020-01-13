@@ -23,11 +23,13 @@ let generateToken = (user) => {
 }
 
 let addTokenToTokenPool = (token, tokenPool) => {
-    return tokenPool.push(token);
+    tokenPool.push(token);
+    return tokenPool;
 }
 
 let removeTokenFromTokenPool = (token, tokenPool) => {
-    return tokenPool.splice( tokenPool.indexOf(token), 1 );
+    tokenPool.splice( tokenPool.indexOf(token), 1 );
+    return tokenPool;
 }
 
 let isTokenInPool = (token, tokenPool) => {
