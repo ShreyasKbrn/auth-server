@@ -1,0 +1,22 @@
+{
+  "name": "auth-server",
+  "version": "1.0.0",
+  "description": "Mock Auth server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShreyasKbrn/auth-server.git"
+  },
+  "author": "Shreyas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShreyasKbrn/auth-server/issues"
+  },
+  "homepage": "https://github.com/ShreyasKbrn/auth-server#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
