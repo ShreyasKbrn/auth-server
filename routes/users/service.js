@@ -29,7 +29,7 @@ validateUserCredentials = (user) => {
      */
     let response = getUserByEmail({email: user.email});
     if (response.status === 1) {
-        if (response.profile.id === user.id) {
+        if (response.profile.id == user.id) {
             return {status: 1, profile: user.profile}
         } else return {status: -1};
     } else {
@@ -51,14 +51,15 @@ addUser = (userData) => {
     if (getUserByEmail({email:email})['status']=== 1) {
         return {status: -1};
     } else {
-        usersData.profiles.push({
+        let profile = {
             id: id, 
             email: email, 
             first_name: first_name, 
             last_name: last_name,
             avatar
-        });
-        return {status: 1}
+        };
+        usersData.profiles.push(profile);
+        return {status: 1, profile: profile}
     }
 }
 

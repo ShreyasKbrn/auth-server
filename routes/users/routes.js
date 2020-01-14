@@ -31,17 +31,22 @@ let addUser = (req, res, next) => {
     if (response.status === -1) {
         res.json({status: -1, message: 'user already exists.'});
     } else if(response.status === 1) {
-        res.json({status: 1});
+        res.json({status: 1, profile: response.profile});
     }
 }
 
 let logout = (req, res) => {
     tokenPool = tokenFunctions.removeTokenFromTokenPool(req.body.token, tokenPool);
-    res.json({status: 1, message: 'Token Deleted'});
+    res.json({status: 1, message: 'Logged out'});
 }
 
 let onlineUsers = (req, res, next) => {
     res.json({users: [...tokenPool]});
+}
+
+let logoutAll = (req, res) => {
+    tokenPool.length=0;
+    res.json({});
 }
 
 router.post('/authenticate', authenticate);
@@ -49,5 +54,6 @@ router.get('/getAll', getAll);
 router.post('/addUser', addUser);
 router.get('/online', onlineUsers);
 router.delete('/logout', logout);
+router.delete('/logoutAll', logoutAll);
 
 module.exports = router;
