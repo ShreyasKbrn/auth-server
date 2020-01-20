@@ -1,4 +1,6 @@
 let usersData = require('../../mockData/users');
+let db = require('../../db/conn');
+let userModel = require("../../db/models/user_model");
 
 /*
   { id: 12,
@@ -8,18 +10,33 @@ let usersData = require('../../mockData/users');
     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg' }
 */
 
-getUserByEmail = (user) => {
+getUserByEmail = async (user) => {
     /**Returns
      * 1. User found {status: 1, userProfile}
      * 2. User not found {status: -1}
      */
-    for (let i=0; i<usersData.profiles.length; i++) {
-        let { email} = usersData.profiles[i];
-        if (email === user.email) {
-            return {status: 1, profile: usersData.profiles[i]};
+    // for (let i=0; i<usersData.profiles.length; i++) {
+    //     let { email} = usersData.profiles[i];
+    //     if (email === user.email) {
+    //         return {status: 1, profile: usersData.profiles[i]};
+    //     }
+    // }
+    // return {status: -1}
+    try {
+        let doc = await userModel.find({
+            email: user.email
+        });
+        
+        if (doc.length === 0) {
+            return {status: -1};
+        } else {
+            return {status: 1, profile: doc[0]};
         }
+
+    } catch (e) {
+        console.log(e);
     }
-    return {status: -1}
+
 }
 
 validateUserCredentials = (user) => {
@@ -37,36 +54,43 @@ validateUserCredentials = (user) => {
     }
 }
 
-addUser = (userData) => {
+addUser = async (userData) => {
     /**Status Codes
      * -1: User with email already exists
      * 1: User added
      */
-    let id = new Date()*1;
     let email = userData.email;
     let first_name = userData.first_name;
     let last_name = userData.last_name;
-    let avatar = 'https://image.flaticon.com/icons/png/512/21/21294.png'
-
-    if (getUserByEmail({email:email})['status']=== 1) {
+    let response = await getUserByEmail({email:email});
+    if (response['status']=== 1) {
         return {status: -1};
     } else {
-        usersData.profiles.push({
-            id: id, 
+        let new_user = new userModel(Object.assign({}, {
             email: email, 
             first_name: first_name, 
             last_name: last_name,
-            avatar
-        });
-        return {status: 1}
+        }));
+        try {
+            let doc = await new_user.save();
+            return {status: 1, profile: doc};
+        } catch (e) {
+            return {status: -1};
+        }
     }
 }
 
-getAllUsers = () => {
-    return usersData.profiles;
-}
 
-module.exports = {getUserByEmail, validateUserCredentials, addUser, getAllUsers}
+let main = async ()=> {
+    let usr = await addUser({
+        email: 'idk1234567@g.com',
+        first_name: 'idk',
+        last_name: 'kumar'
+    })
+    console.log(usr);
+}
+main();
+module.exports = {getUserByEmail, validateUserCredentials, addUser}
 
 // console.log(addUser({email: 's@k.c', first_name: 's', last_name: 'k'}))
 // console.log(getAllUsers());
