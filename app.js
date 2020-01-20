@@ -28,9 +28,9 @@ global.tokenPool = [];
 //     //let {email, first_name, last_name} = user;
 //     console.log(addUser({email: user.email, first_name: user.first_name, last_name: user.last_name}));
 // });
-// app.use('/users', require('./routes/users/routes'));
+app.use('/users', require('./routes/users/routes'));
 
-// const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 3200;
-// const server = app.listen(port, function () {
-//     console.log('Server listening on port ' + port);
-// });
+const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 3200;
+const server = app.listen(port, function () {
+    console.log('Server listening on port ' + port);
+});
